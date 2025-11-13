@@ -1,17 +1,22 @@
 import Lottie from "lottie-react";
-import type { LottieObject } from "../types";
+import { useLottieData } from "../context/lottie-data-provider";
 
-interface PreviewProps {
-  animationKey: number;
-  lottieData: LottieObject;
-}
-
-const Preview = ({ animationKey, lottieData }: PreviewProps) => {
+const Preview = () => {
+  const { lottieData, animationKey } = useLottieData();
   return (
     <div className="preview-section">
       <h2>Preview</h2>
       <div className="lottie-container">
-        <Lottie key={animationKey} animationData={lottieData} loop={true} />
+        {lottieData ? (
+          <Lottie key={animationKey} animationData={lottieData} loop={true} />
+        ) : (
+          <p
+            className="no-fills"
+            style={{ textAlign: "center", color: "black" }}
+          >
+            No Lottie data found. Please upload a Lottie JSON file.
+          </p>
+        )}
       </div>
     </div>
   );

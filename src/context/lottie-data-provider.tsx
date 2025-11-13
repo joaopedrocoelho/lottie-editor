@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useState } from "react";
-import type { ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
 import type {
   LottieObject,
   FillColor,
@@ -118,6 +118,10 @@ export const LottieDataProvider = ({ children }: { children: ReactNode }) => {
     },
     [groupedColors]
   );
+
+  useEffect(() => {
+    console.log("lottieData", lottieData);
+  }, [lottieData]);
 
   return (
     <LottieDataContext.Provider

@@ -169,6 +169,21 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
+.color-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.confirm-button {
+  background-color: lightgreen;
+  color: black;
+}
+
+.cancel-button {
+  background-color: lightcoral;
+  color: black;
+}
+
 .color-input-group {
   display: flex;
   gap: 0.5rem;

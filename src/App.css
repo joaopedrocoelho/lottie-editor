@@ -158,6 +158,17 @@
   margin-top: 0.25rem;
 }
 
+.count-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  background: rgba(100, 108, 255, 0.2);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
 .color-input-group {
   display: flex;
   gap: 0.5rem;
@@ -235,6 +246,11 @@
 
   .path-info {
     color: rgba(0, 0, 0, 0.5);
+  }
+
+  .count-badge {
+    background: rgba(100, 108, 255, 0.15);
+    color: rgba(0, 0, 0, 0.8);
   }
 
   .color-hex {

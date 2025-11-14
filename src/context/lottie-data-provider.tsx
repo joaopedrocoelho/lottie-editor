@@ -1,11 +1,7 @@
 import { createContext, useCallback, useContext, useState } from "react";
 import { type ReactNode, useEffect } from "react";
-import type {
-  LottieObject,
-  FillColor,
-  GroupedFillColor,
-  LottieValue,
-} from "../types";
+import type { LottieObject, FillColor, GroupedFillColor } from "../types";
+import { updateColors } from "../utils";
 
 interface LottieDataContextType {
   lottieData: LottieObject | null;
@@ -62,55 +58,7 @@ export const LottieDataProvider = ({ children }: { children: ReactNode }) => {
       // Update the actual lottie data for all fills in the group
       setLottieData((prev) => {
         if (!prev) return prev;
-        const newData = JSON.parse(JSON.stringify(prev)) as LottieObject;
-
-        group.fills.forEach((fill) => {
-          let target: LottieValue = newData;
-          let found = true;
-
-          for (let i = 0; i < fill.path.length; i++) {
-            if (
-              typeof target === "object" &&
-              target !== null &&
-              !Array.isArray(target)
-            ) {
-              target = (target as LottieObject)[fill.path[i]];
-            } else {
-              found = false;
-              break;
-            }
-          }
-
-          if (
-            found &&
-            typeof target === "object" &&
-            target !== null &&
-            !Array.isArray(target) &&
-            (target as LottieObject).ty === "fl"
-          ) {
-            const targetObj = target as LottieObject;
-            // Preserve alpha channel if it exists
-            const newColorWithAlpha =
-              fill.value.length === 4 ? [...newColor, fill.value[3]] : newColor;
-
-            if (fill.isNested) {
-              // Update nested structure: c.k
-              if (
-                targetObj.c &&
-                typeof targetObj.c === "object" &&
-                targetObj.c !== null &&
-                !Array.isArray(targetObj.c)
-              ) {
-                (targetObj.c as LottieObject).k = newColorWithAlpha;
-              }
-            } else {
-              // Update direct structure: c
-              targetObj.c = newColorWithAlpha;
-            }
-          }
-        });
-
-        return newData;
+        return updateColors(prev, group, newColor);
       });
 
       // Force Lottie component to re-render with updated data

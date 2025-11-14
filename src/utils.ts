@@ -125,3 +125,59 @@ export const hexToRgb = (hex: string): number[] => {
     parseInt(result[3], 16) / 255,
   ];
 };
+
+export const updateColors = (
+  prev: LottieObject,
+  group: GroupedFillColor,
+  newColor: number[]
+) => {
+  const newData = JSON.parse(JSON.stringify(prev)) as LottieObject;
+
+  group.fills.forEach((fill) => {
+    let target: LottieValue = newData;
+    let found = true;
+
+    for (let i = 0; i < fill.path.length; i++) {
+      if (typeof target === "object" && target !== null) {
+        if (Array.isArray(target)) {
+          target = target[parseInt(fill.path[i])];
+        } else {
+          target = (target as LottieObject)[fill.path[i]];
+        }
+      } else {
+        found = false;
+        break;
+      }
+    }
+
+    if (
+      found &&
+      typeof target === "object" &&
+      target !== null &&
+      !Array.isArray(target) &&
+      (target as LottieObject).ty === "fl"
+    ) {
+      const targetObj = target as LottieObject;
+      // Preserve alpha channel if it exists
+      const newColorWithAlpha =
+        fill.value.length === 4 ? [...newColor, fill.value[3]] : newColor;
+
+      if (fill.isNested) {
+        // Update nested structure: c.k
+        if (
+          targetObj.c &&
+          typeof targetObj.c === "object" &&
+          targetObj.c !== null &&
+          !Array.isArray(targetObj.c)
+        ) {
+          (targetObj.c as LottieObject).k = newColorWithAlpha;
+        }
+      } else {
+        // Update direct structure: c
+        targetObj.c = newColorWithAlpha;
+      }
+    }
+  });
+
+  return newData;
+};

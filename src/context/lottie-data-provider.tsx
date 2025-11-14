@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useState } from "react";
 import { type ReactNode, useEffect } from "react";
 import type { LottieObject, FillColor, GroupedFillColor } from "../types";
-import { updateColors } from "../utils";
+import { updateColor } from "../utils";
 
 interface LottieDataContextType {
   lottieData: LottieObject | null;
@@ -31,6 +31,10 @@ export const LottieDataProvider = ({ children }: { children: ReactNode }) => {
       const group = groupedColors[groupIndex];
       if (!group) return;
 
+      console.log(
+        `Updating group ${groupIndex} with ${group.fills.length} fills`
+      );
+
       // Update the grouped colors state
       setGroupedColors((prev) => {
         const updated = [...prev];
@@ -58,7 +62,7 @@ export const LottieDataProvider = ({ children }: { children: ReactNode }) => {
       // Update the actual lottie data for all fills in the group
       setLottieData((prev) => {
         if (!prev) return prev;
-        return updateColors(prev, group, newColor);
+        return updateColor(prev, group.value, newColor);
       });
 
       // Force Lottie component to re-render with updated data

@@ -23,6 +23,16 @@ export function findFills(obj: LottieValue, path: string[] = []): FillColor[] {
 
   const lottieObj = obj as LottieObject;
 
+  // Skip pre-composition layers (ty: 0) to avoid counting fills twice
+  // Pre-comps reference compositions defined in assets, so we only want to count
+  // fills in the asset definitions, not in the references
+  if (lottieObj.ty === 0 && lottieObj.refId) {
+    console.log(
+      `[findFills] Skipping pre-comp layer with refId: ${lottieObj.refId}`
+    );
+    return fills;
+  }
+
   // Check if this is a fill object
   if (lottieObj.ty === "fl" && lottieObj.c) {
     let colorArray: number[] | null = null;
@@ -46,12 +56,22 @@ export function findFills(obj: LottieValue, path: string[] = []): FillColor[] {
     }
 
     if (colorArray && colorArray.length >= 3) {
-      fills.push({
+      const fill = {
         path: [...path],
         value: [...colorArray],
         originalValue: [...colorArray],
         isNested,
-      });
+      };
+      fills.push(fill);
+      // Log skin color fills specifically
+      if (
+        Math.abs(colorArray[0] - 0.87450986376) < 0.0001 &&
+        Math.abs(colorArray[1] - 0.619607843137) < 0.0001
+      ) {
+        console.log(
+          `[findFills] Found skin color fill at path: ${path.join(" -> ")}`
+        );
+      }
     }
   }
 
@@ -126,58 +146,75 @@ export const hexToRgb = (hex: string): number[] => {
   ];
 };
 
-export const updateColors = (
+export const updateColor = (
   prev: LottieObject,
-  group: GroupedFillColor,
+  oldColor: number[],
   newColor: number[]
 ) => {
   const newData = JSON.parse(JSON.stringify(prev)) as LottieObject;
 
-  group.fills.forEach((fill) => {
-    let target: LottieValue = newData;
-    let found = true;
+  // Recursive function to traverse and update colors
+  const updateColorRecursive = (obj: LottieValue): void => {
+    if (typeof obj !== "object" || obj === null) {
+      return;
+    }
 
-    for (let i = 0; i < fill.path.length; i++) {
-      if (typeof target === "object" && target !== null) {
-        if (Array.isArray(target)) {
-          target = target[parseInt(fill.path[i])];
-        } else {
-          target = (target as LottieObject)[fill.path[i]];
+    // Handle arrays
+    if (Array.isArray(obj)) {
+      obj.forEach((item) => updateColorRecursive(item));
+      return;
+    }
+
+    const lottieObj = obj as LottieObject;
+
+    // Check if this is a fill object with a color
+    if (lottieObj.ty === "fl" && lottieObj.c) {
+      // Check if color is directly in c as an array
+      if (Array.isArray(lottieObj.c)) {
+        const colorArray = lottieObj.c as number[];
+        if (colorsEqual(colorArray, oldColor)) {
+          // Update RGB values, preserve alpha if it exists
+          colorArray[0] = newColor[0];
+          colorArray[1] = newColor[1];
+          colorArray[2] = newColor[2];
+          // If newColor has alpha and old color has alpha, update it
+          if (newColor.length > 3 && colorArray.length > 3) {
+            colorArray[3] = newColor[3];
+          }
         }
-      } else {
-        found = false;
-        break;
+      }
+      // Check if color is in c.k (nested structure)
+      else if (
+        typeof lottieObj.c === "object" &&
+        lottieObj.c !== null &&
+        !Array.isArray(lottieObj.c) &&
+        "k" in lottieObj.c
+      ) {
+        const cObj = lottieObj.c as LottieObject;
+        if (Array.isArray(cObj.k)) {
+          const colorArray = cObj.k as number[];
+          if (colorsEqual(colorArray, oldColor)) {
+            // Update RGB values, preserve alpha if it exists
+            colorArray[0] = newColor[0];
+            colorArray[1] = newColor[1];
+            colorArray[2] = newColor[2];
+            // If newColor has alpha and old color has alpha, update it
+            if (newColor.length > 3 && colorArray.length > 3) {
+              colorArray[3] = newColor[3];
+            }
+          }
+        }
       }
     }
 
-    if (
-      found &&
-      typeof target === "object" &&
-      target !== null &&
-      !Array.isArray(target) &&
-      (target as LottieObject).ty === "fl"
-    ) {
-      const targetObj = target as LottieObject;
-      // Preserve alpha channel if it exists
-      const newColorWithAlpha =
-        fill.value.length === 4 ? [...newColor, fill.value[3]] : newColor;
-
-      if (fill.isNested) {
-        // Update nested structure: c.k
-        if (
-          targetObj.c &&
-          typeof targetObj.c === "object" &&
-          targetObj.c !== null &&
-          !Array.isArray(targetObj.c)
-        ) {
-          (targetObj.c as LottieObject).k = newColorWithAlpha;
-        }
-      } else {
-        // Update direct structure: c
-        targetObj.c = newColorWithAlpha;
+    // Recursively search in all properties
+    for (const key in lottieObj) {
+      if (Object.prototype.hasOwnProperty.call(lottieObj, key)) {
+        updateColorRecursive(lottieObj[key]);
       }
     }
-  });
+  };
 
+  updateColorRecursive(newData);
   return newData;
 };

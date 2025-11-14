@@ -9,6 +9,7 @@ import {
 } from "./utils";
 import type { GroupedFillColor, LottieObject } from "./types";
 import successfullyDoneJson from "./mock/successfully-done.json";
+import dataJson from "./mock/data.json";
 
 describe("updateColors", () => {
   it("should update nested color structure (c.k)", () => {
@@ -414,5 +415,231 @@ describe("groupFillsByColor", () => {
   it("should handle empty fills array", () => {
     const groups = groupFillsByColor([]);
     expect(groups).toEqual([]);
+  });
+});
+
+describe("updateColors with data.json - Multiple Objects Same Color", () => {
+  it("should find multiple fills with the same skin color", () => {
+    const lottieData = dataJson as unknown as LottieObject;
+    const fills = findFills(lottieData);
+    const groups = groupFillsByColor(fills);
+
+    // Find the skin color group (peach/tan color)
+    const skinColorGroup = groups.find((group) =>
+      colorsEqual(group.value, [0.87450986376, 0.619607843137, 0.509803921569])
+    );
+
+    expect(skinColorGroup).toBeDefined();
+    // This color is used in multiple places (hands, arms, face, etc.)
+    expect(skinColorGroup!.fills.length).toBeGreaterThan(1);
+  });
+
+  it("should update ALL fills when multiple objects share the same color", () => {
+    const lottieData = dataJson as unknown as LottieObject;
+    const fills = findFills(lottieData);
+    const groups = groupFillsByColor(fills);
+
+    // Find the skin color group
+    const skinColorGroup = groups.find((group) =>
+      colorsEqual(group.value, [0.87450986376, 0.619607843137, 0.509803921569])
+    );
+
+    expect(skinColorGroup).toBeDefined();
+    const originalFillCount = skinColorGroup!.fills.length;
+    expect(originalFillCount).toBeGreaterThan(1);
+
+    // Update to a new color (purple)
+    const newColor = [0.5, 0.2, 0.8];
+    const updatedData = updateColors(lottieData, skinColorGroup!, newColor);
+
+    // Verify ALL fills were updated
+    const updatedFills = findFills(updatedData);
+    const purpleFills = updatedFills.filter((fill) =>
+      colorsEqual(fill.value, newColor)
+    );
+
+    // All original fills should now be purple
+    expect(purpleFills.length).toBe(originalFillCount);
+
+    // Verify none of the old color remains
+    const remainingSkinColorFills = updatedFills.filter((fill) =>
+      colorsEqual(fill.value, [0.87450986376, 0.619607843137, 0.509803921569])
+    );
+    expect(remainingSkinColorFills.length).toBe(0);
+  });
+
+  it("should update ALL blue clothing fills", () => {
+    const lottieData = dataJson as unknown as LottieObject;
+    const fills = findFills(lottieData);
+    const groups = groupFillsByColor(fills);
+
+    // Find the blue clothing color group
+    const blueGroup = groups.find((group) =>
+      colorsEqual(group.value, [0.439215716194, 0.552941176471, 0.85882358925])
+    );
+
+    expect(blueGroup).toBeDefined();
+    const originalFillCount = blueGroup!.fills.length;
+    expect(originalFillCount).toBeGreaterThan(1);
+
+    // Update to red
+    const newColor = [1, 0, 0];
+    const updatedData = updateColors(lottieData, blueGroup!, newColor);
+
+    // Verify ALL fills were updated
+    const updatedFills = findFills(updatedData);
+    const redFills = updatedFills.filter((fill) =>
+      colorsEqual(fill.value, newColor)
+    );
+
+    expect(redFills.length).toBe(originalFillCount);
+
+    // Verify none of the old blue color remains
+    const remainingBlueFills = updatedFills.filter((fill) =>
+      colorsEqual(fill.value, [0.439215716194, 0.552941176471, 0.85882358925])
+    );
+    expect(remainingBlueFills.length).toBe(0);
+  });
+
+  it("should handle nested assets with shared colors", () => {
+    const lottieData = dataJson as unknown as LottieObject;
+    const fills = findFills(lottieData);
+
+    // Group all fills by color
+    const groups = groupFillsByColor(fills);
+
+    // For each group with multiple fills, verify updateColors works correctly
+    groups.forEach((group) => {
+      if (group.fills.length > 1) {
+        const originalCount = group.fills.length;
+        const testColor = [0.123, 0.456, 0.789]; // Unique test color
+
+        const updatedData = updateColors(lottieData, group, testColor);
+        const updatedFills = findFills(updatedData);
+
+        const updatedColorFills = updatedFills.filter((fill) =>
+          colorsEqual(fill.value, testColor)
+        );
+
+        // All fills in the group should have been updated
+        expect(updatedColorFills.length).toBeGreaterThanOrEqual(originalCount);
+      }
+    });
+  });
+
+  it("should preserve alpha channel when updating multiple fills", () => {
+    const lottieData = dataJson as unknown as LottieObject;
+    const fills = findFills(lottieData);
+    const groups = groupFillsByColor(fills);
+
+    // Find a group with multiple fills that have alpha
+    const groupWithAlpha = groups.find(
+      (group) => group.fills.length > 1 && group.value.length === 4
+    );
+
+    if (groupWithAlpha) {
+      const originalAlphaValues = groupWithAlpha.fills.map(
+        (fill) => fill.value[3]
+      );
+
+      const newColor = [0.9, 0.1, 0.5];
+      const updatedData = updateColors(lottieData, groupWithAlpha, newColor);
+
+      const updatedFills = findFills(updatedData);
+
+      // Find all the updated fills by their paths
+      groupWithAlpha.fills.forEach((originalFill, index) => {
+        const updatedFill = updatedFills.find(
+          (fill) => fill.path.join(",") === originalFill.path.join(",")
+        );
+
+        expect(updatedFill).toBeDefined();
+        expect(updatedFill!.value[0]).toBeCloseTo(0.9);
+        expect(updatedFill!.value[1]).toBeCloseTo(0.1);
+        expect(updatedFill!.value[2]).toBeCloseTo(0.5);
+        // Alpha should be preserved
+        expect(updatedFill!.value[3]).toBeCloseTo(originalAlphaValues[index]);
+      });
+    }
+  });
+
+  it("should correctly identify and count all shared colors in data.json", () => {
+    const lottieData = dataJson as unknown as LottieObject;
+    const fills = findFills(lottieData);
+    const groups = groupFillsByColor(fills);
+
+    // Count groups with multiple fills (shared colors)
+    const sharedColorGroups = groups.filter((group) => group.fills.length > 1);
+
+    expect(sharedColorGroups.length).toBeGreaterThan(0);
+
+    // Log for debugging purposes
+    sharedColorGroups.forEach((group) => {
+      console.log(
+        `Color [${group.value
+          .slice(0, 3)
+          .map((v) => v.toFixed(2))
+          .join(", ")}] is used by ${group.fills.length} fills`
+      );
+    });
+  });
+
+  it("should verify each fill in a group has a unique path", () => {
+    const lottieData = dataJson as unknown as LottieObject;
+    const fills = findFills(lottieData);
+    const groups = groupFillsByColor(fills);
+
+    groups.forEach((group) => {
+      if (group.fills.length > 1) {
+        const paths = group.fills.map((fill) => fill.path.join(","));
+        const uniquePaths = new Set(paths);
+
+        // Each fill should have a unique path
+        expect(uniquePaths.size).toBe(group.fills.length);
+      }
+    });
+  });
+
+  it("should demonstrate the full update workflow", () => {
+    const lottieData = dataJson as unknown as LottieObject;
+
+    // Step 1: Find all fills
+    const fills = findFills(lottieData);
+    console.log(`\nTotal fills found: ${fills.length}`);
+
+    // Step 2: Group by color
+    const groups = groupFillsByColor(fills);
+    console.log(`Total color groups: ${groups.length}`);
+
+    // Step 3: Find the skin color group (most common)
+    const skinColorGroup = groups.find((group) =>
+      colorsEqual(group.value, [0.87450986376, 0.619607843137, 0.509803921569])
+    );
+
+    if (skinColorGroup) {
+      console.log(
+        `\nSkin color group has ${skinColorGroup.fills.length} fills`
+      );
+      console.log("Paths of all skin color fills:");
+      skinColorGroup.fills.forEach((fill, index) => {
+        console.log(`  ${index + 1}. ${fill.path.join(" -> ")}`);
+        console.log(`     isNested: ${fill.isNested}`);
+      });
+
+      // Step 4: Update the color
+      const newColor = [1, 0, 0]; // Red
+      const updatedData = updateColors(lottieData, skinColorGroup, newColor);
+
+      // Step 5: Verify ALL were updated
+      const updatedFills = findFills(updatedData);
+      const redFills = updatedFills.filter((fill) =>
+        colorsEqual(fill.value, newColor)
+      );
+
+      console.log(`\nAfter update: ${redFills.length} fills are now red`);
+      console.log(`Expected: ${skinColorGroup.fills.length} fills to be red`);
+
+      expect(redFills.length).toBe(skinColorGroup.fills.length);
+    }
   });
 });

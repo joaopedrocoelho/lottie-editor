@@ -19,8 +19,13 @@ const UploadJson = () => {
           const json = JSON.parse(text);
           setLottieData(json);
           const fills = findFills(json);
+          console.log(`[Upload] Found ${fills.length} total fills`);
           setFillColors(fills);
           const grouped = groupFillsByColor(fills);
+          console.log(`[Upload] Grouped into ${grouped.length} color groups`);
+          grouped.forEach((group, index) => {
+            console.log(`[Upload] Group ${index}: ${group.fills.length} fills`);
+          });
           setGroupedColors(grouped);
           if (fills.length === 0) {
             setError("No fill colors found in this Lottie file.");

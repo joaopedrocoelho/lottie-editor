@@ -24,6 +24,13 @@ const GroupedColors = () => {
               {Math.round(group.value[1] * 255)},{" "}
               {Math.round(group.value[2] * 255)})
             </div>
+            <div className="k-value">
+              "k": [
+              {group.originalValue
+                .map((val) => (Number.isInteger(val) ? val : val.toFixed(11)))
+                .join(", ")}
+              ]
+            </div>
           </div>
         ))
       ) : (

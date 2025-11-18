@@ -1,8 +1,10 @@
 import "./App.css";
 import { useState } from "react";
-import ChangeColors from "./components/change-colors";
-import SwitchParts from "./components/switch-parts";
+import ChangeColors from "./components/change-colors/change-colors";
+import SwitchParts from "./components/switch-parts/switch-parts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
+import { LottieDataProvider } from "./context/lottie-data-provider";
+import { SwitchPartsProvider } from "./context/switch-parts-provider";
 
 function App() {
   const [activeTab, setActiveTab] = useState("switch-parts");
@@ -37,10 +39,14 @@ function App() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="switch-parts">
-          <SwitchParts />
+          <SwitchPartsProvider>
+            <SwitchParts />
+          </SwitchPartsProvider>
         </TabsContent>
         <TabsContent value="change-colors">
-          <ChangeColors />
+          <LottieDataProvider>
+            <ChangeColors />
+          </LottieDataProvider>
         </TabsContent>
       </Tabs>
     </div>

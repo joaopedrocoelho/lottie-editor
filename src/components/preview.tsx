@@ -1,9 +1,14 @@
 import Lottie, { type LottieRefCurrentProps } from "lottie-react";
-import { useLottieData } from "../context/lottie-data-provider";
 import { useRef, useEffect } from "react";
+import type { LottieObject } from "@/types";
 
-const Preview = () => {
-  const { lottieData, animationKey } = useLottieData();
+const Preview = ({
+  lottieData,
+  animationKey,
+}: {
+  lottieData: LottieObject | null;
+  animationKey: number;
+}) => {
   const lottieRef = useRef<LottieRefCurrentProps | null>(null);
 
   useEffect(() => {}, [lottieData]);

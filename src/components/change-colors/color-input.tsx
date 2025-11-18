@@ -1,15 +1,15 @@
-import { useLottieData } from "../context/lottie-data-provider";
-import { hexToRgb, rgbToHex } from "../utils";
+import { useLottieData } from "../../context/lottie-data-provider";
+import { hexToRgb, rgbToHex } from "../../utils";
 import { useCallback, useState } from "react";
-import type { GroupedFillColor } from "../types";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import type { GroupedFillColor } from "../../types";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import {
   ColorPicker,
   ColorPickerSelection,
   ColorPickerHue,
   ColorPickerAlpha,
   ColorPickerFormat,
-} from "./ui/shadcn-io/color-picker";
+} from "../ui/shadcn-io/color-picker";
 
 const ColorInput = ({
   group,

@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { findFills, groupFillsByColor } from "../utils";
-import { useLottieData } from "../context/lottie-data-provider";
+import { findFills, groupFillsByColor } from "../../utils";
+import { useLottieData } from "../../context/lottie-data-provider";
 
 const UploadJson = () => {
   const [error, setError] = useState<string>("");

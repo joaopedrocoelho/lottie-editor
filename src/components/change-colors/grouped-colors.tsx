@@ -1,4 +1,4 @@
-import { useLottieData } from "../context/lottie-data-provider";
+import { useLottieData } from "../../context/lottie-data-provider";
 import ColorInput from "./color-input";
 
 const GroupedColors = () => {

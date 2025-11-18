@@ -1,23 +1,48 @@
-import Header from "./components/header";
 import "./App.css";
-import Preview from "./components/preview";
-import UploadJson from "./components/upload-json";
-import GroupedColors from "./components/grouped-colors";
-import ExportJson from "./components/export-json";
+import { useState } from "react";
+import ChangeColors from "./components/change-colors";
+import SwitchParts from "./components/switch-parts";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 
 function App() {
+  const [activeTab, setActiveTab] = useState("switch-parts");
+
   return (
     <div className="app-container">
-      <Header />
-      <UploadJson />
-
-      <div className="editor-container">
-        <Preview />
-        <div className="controls-section">
-          <ExportJson />
-          <GroupedColors />
-        </div>
-      </div>
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="w-full bg-none"
+      >
+        <TabsList className="flex w-full  gap-x-6">
+          <TabsTrigger
+            value="switch-parts"
+            className={
+              activeTab === "switch-parts"
+                ? "bg-indigo-400 border-indigo-800 border-4"
+                : ""
+            }
+          >
+            Switch Parts
+          </TabsTrigger>
+          <TabsTrigger
+            value="change-colors"
+            className={
+              activeTab === "change-colors"
+                ? "bg-indigo-400 border-indigo-800 border-4"
+                : ""
+            }
+          >
+            Change Colors
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="switch-parts">
+          <SwitchParts />
+        </TabsContent>
+        <TabsContent value="change-colors">
+          <ChangeColors />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

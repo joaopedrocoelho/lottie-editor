@@ -6,10 +6,10 @@ import {
   colorsEqual,
   rgbToHex,
   hexToRgb,
-} from "./utils";
-import type { GroupedFillColor, LottieObject } from "./types";
-import successfullyDoneJson from "./mock/successfully-done.json";
-import dataJson from "./mock/data.json";
+} from "../utils";
+import type { GroupedFillColor, LottieObject } from "../types";
+import successfullyDoneJson from "../mock/successfully-done.json";
+import dataJson from "../mock/data.json";
 
 describe("updateColors", () => {
   it("should update nested color structure (c.k)", () => {

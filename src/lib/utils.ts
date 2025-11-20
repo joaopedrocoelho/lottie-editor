@@ -23,7 +23,7 @@ export function findFills(obj: LottieValue, path: string[] = []): FillColor[] {
     return fills;
   }
 
-  const lottieObj = obj as LottieObject;
+  const lottieObj = obj as Record<string, unknown>;
 
   // Skip pre-composition layers (ty: 0) to avoid counting fills twice
   // Pre-comps reference compositions defined in assets, so we only want to count
@@ -51,9 +51,9 @@ export function findFills(obj: LottieValue, path: string[] = []): FillColor[] {
       lottieObj.c !== null &&
       !Array.isArray(lottieObj.c) &&
       "k" in lottieObj.c &&
-      Array.isArray((lottieObj.c as LottieObject).k)
+      Array.isArray((lottieObj.c as Record<string, unknown>).k)
     ) {
-      colorArray = (lottieObj.c as LottieObject).k as number[];
+      colorArray = (lottieObj.c as Record<string, unknown>).k as number[];
       isNested = true;
     }
 
@@ -81,7 +81,7 @@ export function findFills(obj: LottieValue, path: string[] = []): FillColor[] {
   for (const key in lottieObj) {
     if (Object.prototype.hasOwnProperty.call(lottieObj, key)) {
       const newPath = [...path, key];
-      fills.push(...findFills(lottieObj[key], newPath));
+      fills.push(...findFills(lottieObj[key] as LottieValue, newPath));
     }
   }
 
@@ -167,7 +167,7 @@ export const updateColor = (
       return;
     }
 
-    const lottieObj = obj as LottieObject;
+    const lottieObj = obj as Record<string, unknown>;
 
     // Check if this is a fill object with a color
     if (lottieObj.ty === "fl" && lottieObj.c) {
@@ -192,7 +192,7 @@ export const updateColor = (
         !Array.isArray(lottieObj.c) &&
         "k" in lottieObj.c
       ) {
-        const cObj = lottieObj.c as LottieObject;
+        const cObj = lottieObj.c as Record<string, unknown>;
         if (Array.isArray(cObj.k)) {
           const colorArray = cObj.k as number[];
           if (colorsEqual(colorArray, oldColor)) {
@@ -212,7 +212,7 @@ export const updateColor = (
     // Recursively search in all properties
     for (const key in lottieObj) {
       if (Object.prototype.hasOwnProperty.call(lottieObj, key)) {
-        updateColorRecursive(lottieObj[key]);
+        updateColorRecursive(lottieObj[key] as LottieValue);
       }
     }
   };

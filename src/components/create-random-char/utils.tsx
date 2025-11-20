@@ -1,4 +1,4 @@
-import type { CharPart } from "@/lib/switchparts";
+import type { CharPart } from "@/lib/createrandomchar";
 import { baseChar } from "../chars/base";
 import { charPartsMap } from "../chars";
 import type { LottieObject } from "@/types";

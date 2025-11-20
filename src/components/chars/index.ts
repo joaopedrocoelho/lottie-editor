@@ -1,5 +1,4 @@
-import type { CharPart } from "@/lib/switchparts";
-import type { CharPartJson } from "@/lib/createrandomchar";
+import type { CharPart, CharPartJson } from "@/lib/createrandomchar";
 import { accessory } from "./accessory";
 import { head } from "./head";
 import { body } from "./body";

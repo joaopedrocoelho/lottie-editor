@@ -33,6 +33,17 @@ const Preview = ({
           </p>
         )}
       </div>
+      <button
+        type="button"
+        onClick={() => {
+          if (lottieRef.current) {
+            lottieRef.current.setSpeed(1.5);
+          }
+        }}
+        className="upload-button w-fit"
+      >
+        Speed Up
+      </button>
     </div>
   );
 };

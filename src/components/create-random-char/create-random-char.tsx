@@ -9,19 +9,20 @@ const CreateRandomChar = () => {
 
   return (
     <div className="flex flex-col gap-y-4 pt-12">
-      <button
-        type="button"
-        onClick={() => {
-          const randomChar = generateRandomChar();
-          const charJson = generateCharJson(randomChar);
-          setChar(charJson);
-          setKey((prev) => prev + 1);
-        }}
-        className="upload-button w-fit"
-      >
-        Generate Random Char
-      </button>
-
+      <div className="flex gap-x-4">
+        <button
+          type="button"
+          onClick={() => {
+            const randomChar = generateRandomChar();
+            const charJson = generateCharJson(randomChar);
+            setChar(charJson);
+            setKey((prev) => prev + 1);
+          }}
+          className="upload-button w-fit"
+        >
+          Generate Random Char
+        </button>
+      </div>
       {char && <Preview lottieData={char} animationKey={key} />}
     </div>
   );

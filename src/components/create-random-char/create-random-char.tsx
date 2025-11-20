@@ -64,38 +64,38 @@ const CreateRandomChar = () => {
         <button
           type="button"
           onClick={() => {
-            setHueRotation((prev) => prev - 30);
+            setHueRotation((prev) => prev - 20);
           }}
           className="upload-button w-fit"
         >
-          Decrease Hue (-30°)
+          Decrease Hue (-20°)
         </button>
         <button
           type="button"
           onClick={() => {
-            setHueRotation((prev) => prev + 30);
+            setHueRotation((prev) => prev + 20);
           }}
           className="upload-button w-fit"
         >
-          Increase Hue (+30°)
+          Increase Hue (+20°)
         </button>
         <button
           type="button"
           onClick={() => {
-            setSaturation((prev) => Math.max(0, prev - 25));
+            setSaturation((prev) => Math.max(0, prev - 15));
           }}
           className="upload-button w-fit"
         >
-          Decrease Saturation (-25%)
+          Decrease Saturation (-15%)
         </button>
         <button
           type="button"
           onClick={() => {
-            setSaturation((prev) => prev + 25);
+            setSaturation((prev) => prev + 15);
           }}
           className="upload-button w-fit"
         >
-          Increase Saturation (+25%)
+          Increase Saturation (+15%)
         </button>
       </div>
     </div>

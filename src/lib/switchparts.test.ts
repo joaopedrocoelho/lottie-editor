@@ -24,17 +24,17 @@ describe("findCharPart", () => {
       expect((result.layer as LottieObject)["ty"]).toBe(0);
     });
 
-    it("should find the acessory part", () => {
-      const result = findCharPart(lottieData01, "acessory");
+    it("should find the accessory part", () => {
+      const result = findCharPart(lottieData01, "accessory");
 
       expect(result.asset).toBeDefined();
       expect(result.asset).not.toBeNull();
-      expect((result.asset as LottieObject)["nm"]).toBe("acessory");
+      expect((result.asset as LottieObject)["nm"]).toBe("accessory");
       expect((result.asset as LottieObject)["id"]).toBe("comp_0");
 
       expect(result.layer).toBeDefined();
       expect(result.layer).not.toBeNull();
-      expect((result.layer as LottieObject)["nm"]).toBe("acessory");
+      expect((result.layer as LottieObject)["nm"]).toBe("accessory");
       expect((result.layer as LottieObject)["refId"]).toBe("comp_0");
     });
 
@@ -112,16 +112,16 @@ describe("findCharPart", () => {
       expect((result.layer as LottieObject)["nm"]).toBe("head");
     });
 
-    it("should find the acessory part", () => {
-      const result = findCharPart(lottieData02, "acessory");
+    it("should find the accessory part", () => {
+      const result = findCharPart(lottieData02, "accessory");
 
       expect(result.asset).toBeDefined();
       expect(result.asset).not.toBeNull();
-      expect((result.asset as LottieObject)["nm"]).toBe("acessory");
+      expect((result.asset as LottieObject)["nm"]).toBe("accessory");
 
       expect(result.layer).toBeDefined();
       expect(result.layer).not.toBeNull();
-      expect((result.layer as LottieObject)["nm"]).toBe("acessory");
+      expect((result.layer as LottieObject)["nm"]).toBe("accessory");
     });
 
     it("should find the body part", () => {

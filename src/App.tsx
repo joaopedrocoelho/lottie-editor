@@ -2,6 +2,7 @@ import "./App.css";
 import { useState } from "react";
 import ChangeColors from "./components/change-colors/change-colors";
 import SwitchParts from "./components/switch-parts/switch-parts";
+import CreateRandomChar from "./components/create-random-char/create-random-char";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { LottieDataProvider } from "./context/lottie-data-provider";
 import { SwitchPartsProvider } from "./context/switch-parts-provider";
@@ -37,6 +38,16 @@ function App() {
           >
             Change Colors
           </TabsTrigger>
+          <TabsTrigger
+            value="create-random-char"
+            className={
+              activeTab === "create-random-char"
+                ? "bg-indigo-400 border-indigo-800 border-4"
+                : ""
+            }
+          >
+            Create Random Char
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="switch-parts">
           <SwitchPartsProvider>
@@ -46,6 +57,11 @@ function App() {
         <TabsContent value="change-colors">
           <LottieDataProvider>
             <ChangeColors />
+          </LottieDataProvider>
+        </TabsContent>
+        <TabsContent value="create-random-char">
+          <LottieDataProvider>
+            <CreateRandomChar />
           </LottieDataProvider>
         </TabsContent>
       </Tabs>

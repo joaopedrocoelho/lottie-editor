@@ -16,7 +16,21 @@ export type LottieValue =
   | number
   | boolean
   | null
-  | LottieObject
+  | Record<string, unknown>
   | LottieArray;
-export type LottieObject = { [key: string]: LottieValue };
+
+export type LottieObject = {
+  v: string;
+  fr: number;
+  ip: number;
+  op: number;
+  w: number;
+  h: number;
+  nm: string;
+  ddd: number;
+  assets: Record<string, unknown>[];
+  layers: Record<string, unknown>[];
+  markers: Record<string, unknown>[];
+  props: Record<string, LottieValue>;
+};
 export type LottieArray = LottieValue[];

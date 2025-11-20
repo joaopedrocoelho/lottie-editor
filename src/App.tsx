@@ -1,15 +1,12 @@
 import "./App.css";
 import { useState } from "react";
 import ChangeColors from "./components/change-colors/change-colors";
-import SwitchParts from "./components/switch-parts/switch-parts";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { LottieDataProvider } from "./context/lottie-data-provider";
-import { SwitchPartsProvider } from "./context/switch-parts-provider";
 import CreateRandomChar from "./components/create-random-char/create-random-char";
 
 function App() {
-  const [activeTab, setActiveTab] = useState("switch-parts");
+  const [activeTab, setActiveTab] = useState("create-random-char");
 
   return (
     <div className="app-container">
@@ -50,11 +47,6 @@ function App() {
             Create Random Char
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="switch-parts">
-          <SwitchPartsProvider>
-            <SwitchParts />
-          </SwitchPartsProvider>
-        </TabsContent>
         <TabsContent value="change-colors">
           <LottieDataProvider>
             <ChangeColors />

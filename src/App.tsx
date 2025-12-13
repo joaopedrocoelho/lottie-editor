@@ -1,8 +1,14 @@
 import "./App.css";
 import { Routes, Route, NavLink, Navigate } from "react-router";
+import { Suspense, lazy } from "react";
 import ChangeColors from "./components/change-colors/change-colors";
 import { LottieDataProvider } from "./context/lottie-data-provider";
 import CreateRandomChar from "./components/create-random-char/create-random-char";
+
+// Lazy load the animations page
+const AnimationsPage = lazy(
+  () => import("./components/animations/animations-page")
+);
 
 function App() {
   return (
@@ -44,6 +50,18 @@ function App() {
         >
           Create Random Char
         </NavLink>
+        <NavLink
+          to="/animations"
+          className={({ isActive }) =>
+            `px-4 py-2 rounded border-4 transition-all text-white ${
+              isActive
+                ? "bg-indigo-400 border-white"
+                : "bg-indigo-400 border-transparent hover:bg-indigo-600"
+            }`
+          }
+        >
+          Animations
+        </NavLink>
       </nav>
       <Routes>
         <Route
@@ -72,6 +90,20 @@ function App() {
             <LottieDataProvider>
               <CreateRandomChar />
             </LottieDataProvider>
+          }
+        />
+        <Route
+          path="/animations"
+          element={
+            <Suspense
+              fallback={
+                <div className="w-full h-full py-12 flex items-center justify-center">
+                  <div className="text-lg">Loading animations...</div>
+                </div>
+              }
+            >
+              <AnimationsPage />
+            </Suspense>
           }
         />
       </Routes>

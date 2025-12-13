@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import type { LottieObject } from "@/types";
 import { generateCharJson, generateRandomChar } from "./utils";
 import Lottie, { type LottieRefCurrentProps } from "lottie-react";
+import AnimationControls from "./animation-controls";
 
 const CreateRandomChar = () => {
   const [char, setChar] = useState<LottieObject>();
@@ -49,55 +50,11 @@ const CreateRandomChar = () => {
           </p>
         )}
       </div>
-      <div className="flex gap-x-4">
-        <button
-          type="button"
-          onClick={() => {
-            if (lottieRef.current) {
-              lottieRef.current.setSpeed(1.5);
-            }
-          }}
-          className="upload-button w-fit"
-        >
-          Speed Up
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setHueRotation((prev) => prev - 20);
-          }}
-          className="upload-button w-fit"
-        >
-          Decrease Hue (-20°)
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setHueRotation((prev) => prev + 20);
-          }}
-          className="upload-button w-fit"
-        >
-          Increase Hue (+20°)
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setSaturation((prev) => Math.max(0, prev - 15));
-          }}
-          className="upload-button w-fit"
-        >
-          Decrease Saturation (-15%)
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setSaturation((prev) => prev + 15);
-          }}
-          className="upload-button w-fit"
-        >
-          Increase Saturation (+15%)
-        </button>
-      </div>
+      <AnimationControls
+        lottieRef={lottieRef}
+        setHueRotation={setHueRotation}
+        setSaturation={setSaturation}
+      />
     </div>
   );
 };

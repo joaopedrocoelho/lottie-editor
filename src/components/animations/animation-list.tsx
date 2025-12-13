@@ -8,12 +8,17 @@ const LazyAnimationItem = lazy(() => import("./animation-item"));
 interface AnimationListProps {
   animations: AnimationFile[];
   loadAnimation: (path: string) => Promise<LottieObject>;
+  onZoomClick?: (animation: AnimationFile) => void;
 }
 
 /**
  * Component that displays a list of Lottie animations in a row (wrappable)
  */
-export default function AnimationList({ animations, loadAnimation }: AnimationListProps) {
+export default function AnimationList({
+  animations,
+  loadAnimation,
+  onZoomClick,
+}: AnimationListProps) {
   return (
     <div className="flex flex-wrap gap-4">
       {animations.map((animation) => (
@@ -25,7 +30,11 @@ export default function AnimationList({ animations, loadAnimation }: AnimationLi
             </div>
           }
         >
-          <LazyAnimationItem animation={animation} loadAnimation={loadAnimation} />
+          <LazyAnimationItem
+            animation={animation}
+            loadAnimation={loadAnimation}
+            onZoomClick={onZoomClick}
+          />
         </Suspense>
       ))}
     </div>

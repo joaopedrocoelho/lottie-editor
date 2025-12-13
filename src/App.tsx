@@ -1,63 +1,80 @@
 import "./App.css";
-import { useState } from "react";
+import { Routes, Route, NavLink, Navigate } from "react-router";
 import ChangeColors from "./components/change-colors/change-colors";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { LottieDataProvider } from "./context/lottie-data-provider";
 import CreateRandomChar from "./components/create-random-char/create-random-char";
 
 function App() {
-  const [activeTab, setActiveTab] = useState("create-random-char");
-
   return (
     <div className="app-container">
-      <Tabs
-        value={activeTab}
-        onValueChange={setActiveTab}
-        className="w-full bg-none"
-      >
-        <TabsList className="flex w-full  gap-x-6">
-          <TabsTrigger
-            value="switch-parts"
-            className={
-              activeTab === "switch-parts"
-                ? "bg-indigo-400 border-indigo-800 border-4"
-                : ""
-            }
-          >
-            Switch Parts
-          </TabsTrigger>
-          <TabsTrigger
-            value="change-colors"
-            className={
-              activeTab === "change-colors"
-                ? "bg-indigo-400 border-indigo-800 border-4"
-                : ""
-            }
-          >
-            Change Colors
-          </TabsTrigger>
-          <TabsTrigger
-            value="create-random-char"
-            className={
-              activeTab === "create-random-char"
-                ? "bg-indigo-400 border-indigo-800 border-4"
-                : ""
-            }
-          >
-            Create Random Char
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="change-colors">
-          <LottieDataProvider>
-            <ChangeColors />
-          </LottieDataProvider>
-        </TabsContent>
-        <TabsContent value="create-random-char">
-          <LottieDataProvider>
-            <CreateRandomChar />
-          </LottieDataProvider>
-        </TabsContent>
-      </Tabs>
+      <nav className="flex w-full gap-x-6 mb-4">
+        <NavLink
+          to="/switch-parts"
+          className={({ isActive }) =>
+            `px-4 py-2 rounded border-4 transition-all text-white ${
+              isActive
+                ? "bg-indigo-400 border-white"
+                : "bg-indigo-400 border-transparent hover:bg-indigo-600"
+            }`
+          }
+        >
+          Switch Parts
+        </NavLink>
+        <NavLink
+          to="/change-colors"
+          className={({ isActive }) =>
+            `px-4 py-2 rounded border-4 transition-all text-white ${
+              isActive
+                ? "bg-indigo-400 border-white"
+                : "bg-indigo-400 border-transparent hover:bg-indigo-600"
+            }`
+          }
+        >
+          Change Colors
+        </NavLink>
+        <NavLink
+          to="/create-random-char"
+          className={({ isActive }) =>
+            `px-4 py-2 rounded border-4 transition-all text-white ${
+              isActive
+                ? "bg-indigo-400 border-white"
+                : "bg-indigo-400 border-transparent hover:bg-indigo-600"
+            }`
+          }
+        >
+          Create Random Char
+        </NavLink>
+      </nav>
+      <Routes>
+        <Route
+          path="/"
+          element={<Navigate to="/create-random-char" replace />}
+        />
+        <Route
+          path="/switch-parts"
+          element={
+            <div className="w-full h-full py-12">
+              <p>Switch Parts feature coming soon...</p>
+            </div>
+          }
+        />
+        <Route
+          path="/change-colors"
+          element={
+            <LottieDataProvider>
+              <ChangeColors />
+            </LottieDataProvider>
+          }
+        />
+        <Route
+          path="/create-random-char"
+          element={
+            <LottieDataProvider>
+              <CreateRandomChar />
+            </LottieDataProvider>
+          }
+        />
+      </Routes>
     </div>
   );
 }

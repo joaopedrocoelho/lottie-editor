@@ -103,7 +103,7 @@ const CreateRandomChar = () => {
           )}
         </div>
 
-        <div className="lottie-container">
+        <div className="lottie-container w-1/3">
           {char ? (
             <div
               style={{

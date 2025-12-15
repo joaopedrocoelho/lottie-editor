@@ -1,0 +1,11 @@
+{
+  "run01": [
+    "front_arm",
+    "acessory",
+    "head",
+    "body",
+    "front_leg",
+    "back_leg",
+    "back_arm"
+  ]
+}

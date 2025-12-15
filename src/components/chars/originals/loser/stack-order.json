@@ -1,0 +1,50 @@
+{
+  "loser01": [
+    "front_arm",
+    "back_forearm02",
+    "acessory",
+    "head",
+    "body",
+    "front_leg",
+    "back_leg",
+    "back_forearm",
+    "back_arm"
+  ],
+  "loser02": [
+    "tears",
+    "front_arm",
+    "acessory",
+    "head",
+    "body",
+    "front_leg",
+    "back_leg",
+    "back_arm"
+  ],
+  "loser03": [
+    "front_arm",
+    "acessory",
+    "head",
+    "body",
+    "front_leg",
+    "back_leg",
+    "back_arm"
+  ],
+  "loser04": [
+    "acessory",
+    "head",
+    "front_arm",
+    "body",
+    "front_leg",
+    "back_leg",
+    "back_arm"
+  ],
+  "loser05": [
+    "front_arm",
+    "acessory",
+    "head",
+    "body",
+    "front_leg",
+    "back_leg",
+    "back_arm"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "winner01": [
+    "stars",
+    "front_arm",
+    "acessory",
+    "head",
+    "back_hand",
+    "body",
+    "front_leg",
+    "back_leg",
+    "back_arm"
+  ],
+  "winner02": [
+    "front_arm",
+    "acessory",
+    "head",
+    "body",
+    "front_leg",
+    "back_leg",
+    "back_arm"
+  ],
+  "winner03": [
+    "front_arm",
+    "acessory",
+    "head",
+    "body",
+    "front_leg",
+    "back_leg",
+    "back_arm"
+  ],
+  "winner04": [
+    "front_arm",
+    "acessory",
+    "head",
+    "body",
+    "front_leg",
+    "back_leg",
+    "back_arm"
+  ],
+  "winner05": [
+    "front_arm",
+    "acessory",
+    "head",
+    "body",
+    "front_leg",
+    "back_leg",
+    "back_arm"
+  ]
+}

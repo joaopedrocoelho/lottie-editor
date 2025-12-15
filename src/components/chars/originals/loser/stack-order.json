@@ -2,7 +2,7 @@
   "loser01": [
     "front_arm",
     "back_forearm02",
-    "acessory",
+    "accessory",
     "head",
     "body",
     "front_leg",
@@ -13,7 +13,7 @@
   "loser02": [
     "tears",
     "front_arm",
-    "acessory",
+    "accessory",
     "head",
     "body",
     "front_leg",
@@ -22,7 +22,7 @@
   ],
   "loser03": [
     "front_arm",
-    "acessory",
+    "accessory",
     "head",
     "body",
     "front_leg",
@@ -30,7 +30,7 @@
     "back_arm"
   ],
   "loser04": [
-    "acessory",
+    "accessory",
     "head",
     "front_arm",
     "body",
@@ -40,7 +40,7 @@
   ],
   "loser05": [
     "front_arm",
-    "acessory",
+    "accessory",
     "head",
     "body",
     "front_leg",

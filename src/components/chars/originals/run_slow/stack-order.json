@@ -1,8 +1,8 @@
 {
   "run_slow": [
+    "front_arm",
     "accessory",
     "head",
-    "front_arm",
     "body",
     "front_leg",
     "back_leg",

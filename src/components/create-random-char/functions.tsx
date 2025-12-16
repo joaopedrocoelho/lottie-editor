@@ -135,6 +135,10 @@ export const generateCharAnimation = async (
   randomChar: RandomChar,
   animationType: AnimationType
 ): Promise<LottieObject> => {
+  console.log("=== generateCharAnimation ===");
+  console.log("randomChar:", randomChar);
+  console.log("animationType:", animationType);
+
   // Get the base chart
   const baseChart = getAnimatioBaseChart(animationType);
 
@@ -147,17 +151,25 @@ export const generateCharAnimation = async (
     markers: [...baseChart.markers],
   };
   const parts = await loadAnimationStackOrder(animationType);
+  console.log("parts:", parts);
 
-  // Dynamically load and add each part
-  for (const part of parts) {
-    if (!isCharPart(part)) {
-      continue;
-    }
-    const charPart = await loadCharPart(part, animationType, randomChar[part]);
+  // Load all character parts in parallel first, then add them in order
+  // This ensures all dynamic imports are fully resolved before processing
+  const validParts = parts.filter(isCharPart);
+  const loadedParts = await Promise.all(
+    validParts.map((part) =>
+      loadCharPart(part, animationType, randomChar[part])
+    )
+  );
+  console.log("loadedParts:", loadedParts);
+
+  // Add parts in the correct stack order
+  for (const charPart of loadedParts) {
     char["assets"].push(...charPart.asset);
     char["layers"].push(charPart.layer);
   }
-  console.log(char);
+
+  console.log("final char:", char);
   return char;
 };
 

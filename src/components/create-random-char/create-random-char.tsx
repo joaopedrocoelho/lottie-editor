@@ -1,22 +1,11 @@
 import { useRef, useState } from "react";
 import type { LottieObject } from "@/types";
-import {
-  generateCharAnimation,
-  generateRandomChar,
-  type RandomChar,
-  type AnimationType,
-} from "./utils";
+import { generateCharAnimation, generateRandomChar } from "./functions";
+import type { RandomChar, AnimationType } from "@/lib/consts";
 import Lottie, { type LottieRefCurrentProps } from "lottie-react";
 import AnimationControls from "./animation-controls";
 import CharDataDisplay from "./char-data-display";
-
-const ANIMATION_TYPES: AnimationType[] = [
-  "walk",
-  "run_fast",
-  "run_slow",
-  "loser",
-  "winner",
-];
+import AnimationTypesSelector from "./animation-types-selector";
 
 const CreateRandomChar = () => {
   const [char, setChar] = useState<LottieObject>();
@@ -83,23 +72,11 @@ const CreateRandomChar = () => {
 
           {/* Animation type buttons */}
           {randomChar && (
-            <div className="flex gap-x-2 flex-wrap">
-              {ANIMATION_TYPES.map((animationType) => (
-                <button
-                  key={animationType}
-                  type="button"
-                  onClick={() => handleAnimationTypeChange(animationType)}
-                  disabled={isLoading}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                    currentAnimationType === animationType
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                  }`}
-                >
-                  {animationType.replace("_", " ").toUpperCase()}
-                </button>
-              ))}
-            </div>
+            <AnimationTypesSelector
+              handleAnimationTypeChange={handleAnimationTypeChange}
+              isLoading={isLoading}
+              currentAnimationType={currentAnimationType}
+            />
           )}
         </div>
 

@@ -1,4 +1,4 @@
-import type { RandomChar } from "./utils";
+import type { RandomChar } from "./functions";
 import type { CharPart } from "@/lib/createrandomchar";
 
 interface CharDataDisplayProps {
@@ -10,7 +10,9 @@ export default function CharDataDisplay({ randomChar }: CharDataDisplayProps) {
     return (
       <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
         <h3 className="text-lg font-semibold mb-2">Character Data</h3>
-        <p className="text-gray-500 text-sm">Generate a character to see its data</p>
+        <p className="text-gray-500 text-sm">
+          Generate a character to see its data
+        </p>
       </div>
     );
   }
@@ -57,4 +59,3 @@ export default function CharDataDisplay({ randomChar }: CharDataDisplayProps) {
     </div>
   );
 }
-

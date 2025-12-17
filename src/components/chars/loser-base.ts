@@ -311,3 +311,18 @@ export const loser2Base: LottieObject = {
   markers: [],
   props: {},
 };
+
+export const loserBase: LottieObject = {
+  v: "5.12.1",
+  fr: 30,
+  ip: 0,
+  op: 60,
+  w: 900,
+  h: 1080,
+  nm: "loser_base",
+  ddd: 0,
+  assets: [],
+  layers: [],
+  markers: [],
+  props: {},
+};

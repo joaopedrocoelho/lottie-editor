@@ -3,7 +3,7 @@ import type { CharPartJson } from "@/lib/createrandomchar";
 import { TOTAL_UNIQUE_CHARS } from "@/lib/consts";
 import type { LottieObject } from "@/types";
 import { walkBase, runSlowBase, runFastBase } from "../chars/base";
-import { loser2Base } from "../chars/loser-base";
+import { loser2Base, loserBase } from "../chars/loser-base";
 import type { RandomChar, AnimationType } from "@/lib/consts";
 import { isCharPart } from "@/lib/createrandomchar";
 export const generateRandomChar = (): RandomChar => {
@@ -27,11 +27,12 @@ export const getAnimatioBaseChart = (
   // Handle loser animations
   if (animationType.startsWith("loser_")) {
     const number = parseInt(animationType.split("_")[1]);
-    if (number === 2) {
-      return loser2Base;
+    switch (number) {
+      case 2:
+        return loser2Base;
+      default:
+        return loserBase;
     }
-    // Add other loser bases here as they're implemented
-    throw new Error(`Loser animation ${number} not yet implemented`);
   }
 
   // Handle winner animations

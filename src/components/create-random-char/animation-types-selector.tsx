@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const LOSER_WINNER_OPTIONS = [2];
+const LOSER_WINNER_OPTIONS = [2, 3, 4, 5];
 
 interface AnimationTypesSelectorProps {
   handleAnimationTypeChange: (animationType: AnimationType) => void;

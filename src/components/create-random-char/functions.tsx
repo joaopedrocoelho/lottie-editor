@@ -6,6 +6,7 @@ import { walkBase, runSlowBase, runFastBase } from "../chars/base";
 import { loser2Base, loser5Base, loserBase } from "../chars/loser-base";
 import type { RandomChar, AnimationType } from "@/lib/consts";
 import { isCharPart } from "@/lib/createrandomchar";
+import { winnerBase, winner3Base, winner5Base } from "../chars/winner-base";
 export const generateRandomChar = (): RandomChar => {
   const randomChar = {
     accessory: Math.floor(Math.random() * TOTAL_UNIQUE_CHARS),
@@ -39,8 +40,15 @@ export const getAnimatioBaseChart = (
 
   // Handle winner animations
   if (animationType.startsWith("winner_")) {
-    // Add winner bases here as they're implemented
-    throw new Error(`Winner animations not yet implemented`);
+    const number = parseInt(animationType.split("_")[1]);
+    switch (number) {
+      case 3:
+        return winner3Base;
+      case 5:
+        return winner5Base;
+      default:
+        return winnerBase;
+    }
   }
 
   // Handle regular animations

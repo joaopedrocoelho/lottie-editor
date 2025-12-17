@@ -3,7 +3,7 @@ import type { CharPartJson } from "@/lib/createrandomchar";
 import { TOTAL_UNIQUE_CHARS } from "@/lib/consts";
 import type { LottieObject } from "@/types";
 import { walkBase, runSlowBase, runFastBase } from "../chars/base";
-import { loser2Base, loserBase } from "../chars/loser-base";
+import { loser2Base, loser5Base, loserBase } from "../chars/loser-base";
 import type { RandomChar, AnimationType } from "@/lib/consts";
 import { isCharPart } from "@/lib/createrandomchar";
 export const generateRandomChar = (): RandomChar => {
@@ -30,6 +30,8 @@ export const getAnimatioBaseChart = (
     switch (number) {
       case 2:
         return loser2Base;
+      case 5:
+        return loser5Base;
       default:
         return loserBase;
     }

@@ -1,4 +1,4 @@
-import type { RandomChar } from "./functions";
+import type { RandomChar } from "@/lib/consts";
 import type { CharPart } from "@/lib/createrandomchar";
 
 interface CharDataDisplayProps {

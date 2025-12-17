@@ -5019,7 +5019,7 @@
     },
     {
       "id": "comp_5",
-      "nm": "back_forearm01",
+      "nm": "back_forearm",
       "fr": 30,
       "layers": [
         {
@@ -7289,7 +7289,7 @@
       "ddd": 0,
       "ind": 3,
       "ty": 4,
-      "nm": "accessoryy",
+      "nm": "accessory",
       "parent": 4,
       "sr": 1,
       "ks": {

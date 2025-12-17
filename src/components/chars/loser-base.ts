@@ -1,5 +1,20 @@
 import type { LottieObject } from "@/types";
 
+export const loser1Base: LottieObject = {
+  v: "5.12.1",
+  fr: 30,
+  ip: 0,
+  op: 82,
+  w: 900,
+  h: 1080,
+  nm: "loser01_base",
+  ddd: 0,
+  assets: [],
+  layers: [],
+  markers: [],
+  props: {},
+};
+
 export const loser2Base: LottieObject = {
   v: "5.12.1",
   fr: 30,

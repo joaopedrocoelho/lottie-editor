@@ -3,19 +3,35 @@ import type { CharPartJson } from "@/lib/createrandomchar";
 import { TOTAL_UNIQUE_CHARS } from "@/lib/consts";
 import type { LottieObject } from "@/types";
 import { walkBase, runSlowBase, runFastBase } from "../chars/base";
-import { loser2Base, loser5Base, loserBase } from "../chars/loser-base";
+import {
+  loser1Base,
+  loser2Base,
+  loser5Base,
+  loserBase,
+} from "../chars/loser-base";
 import type { RandomChar, AnimationType } from "@/lib/consts";
 import { isCharPart } from "@/lib/createrandomchar";
-import { winnerBase, winner3Base, winner5Base } from "../chars/winner-base";
+import {
+  winner1Base,
+  winnerBase,
+  winner3Base,
+  winner5Base,
+} from "../chars/winner-base";
 export const generateRandomChar = (): RandomChar => {
+  const back_arm = Math.floor(Math.random() * TOTAL_UNIQUE_CHARS);
+
   const randomChar = {
     accessory: Math.floor(Math.random() * TOTAL_UNIQUE_CHARS),
     head: Math.floor(Math.random() * TOTAL_UNIQUE_CHARS),
     body: Math.floor(Math.random() * TOTAL_UNIQUE_CHARS),
     front_arm: Math.floor(Math.random() * TOTAL_UNIQUE_CHARS),
-    back_arm: Math.floor(Math.random() * TOTAL_UNIQUE_CHARS),
+    back_arm,
     front_leg: Math.floor(Math.random() * TOTAL_UNIQUE_CHARS),
     back_leg: Math.floor(Math.random() * TOTAL_UNIQUE_CHARS),
+    // Extended parts derived from back_arm
+    back_hand: back_arm,
+    back_forearm: back_arm,
+    back_forearm02: back_arm,
   };
 
   console.log(randomChar);
@@ -29,6 +45,8 @@ export const getAnimatioBaseChart = (
   if (animationType.startsWith("loser_")) {
     const number = parseInt(animationType.split("_")[1]);
     switch (number) {
+      case 1:
+        return loser1Base;
       case 2:
         return loser2Base;
       case 5:
@@ -42,6 +60,8 @@ export const getAnimatioBaseChart = (
   if (animationType.startsWith("winner_")) {
     const number = parseInt(animationType.split("_")[1]);
     switch (number) {
+      case 1:
+        return winner1Base;
       case 3:
         return winner3Base;
       case 5:
@@ -76,12 +96,13 @@ const stackOrderModules = import.meta.glob<{
 
 /**
  * Dynamically load a char part JSON file based on part, animationType, and character number
+ * Returns null if the part doesn't exist for this character/animation combination
  */
 const loadCharPart = async (
   part: CharPart,
   animationType: AnimationType,
   characterNumber: number
-): Promise<CharPartJson> => {
+): Promise<CharPartJson | null> => {
   // Convert character number (0-indexed) to 1-indexed for file naming
   const fileNumber = characterNumber + 1;
 
@@ -99,7 +120,9 @@ const loadCharPart = async (
 
   const loader = charPartModules[path];
   if (!loader) {
-    throw new Error(`Char part not found: ${path}`);
+    // Part doesn't exist for this character/animation - skip it gracefully
+    console.warn(`Char part not found (skipping): ${path}`);
+    return null;
   }
 
   const module = await loader();
@@ -174,10 +197,12 @@ export const generateCharAnimation = async (
   );
   console.log("loadedParts:", loadedParts);
 
-  // Add parts in the correct stack order
+  // Add parts in the correct stack order (skip null parts that don't exist)
   for (const charPart of loadedParts) {
-    char["assets"].push(...charPart.asset);
-    char["layers"].push(charPart.layer);
+    if (charPart) {
+      char["assets"].push(...charPart.asset);
+      char["layers"].push(charPart.layer);
+    }
   }
 
   console.log("final char:", char);

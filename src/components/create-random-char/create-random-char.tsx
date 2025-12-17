@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import type { LottieObject } from "@/types";
 import { generateCharAnimation, generateRandomChar } from "./functions";
 import type { RandomChar, AnimationType } from "@/lib/consts";
-import type { CharPart } from "@/lib/createrandomchar";
+import type { StandardCharPart } from "@/lib/createrandomchar";
 
 import Lottie, { type LottieRefCurrentProps } from "lottie-react";
 import AnimationControls from "./animation-controls";
@@ -39,8 +39,9 @@ const CreateRandomChar = () => {
   };
 
   // Manual character generation state (stored as 0-4 internally, displayed as 1-5)
+  // Only standard parts are editable; extended parts derive from back_arm
   const [manualCharParts, setManualCharParts] = useState<
-    Record<CharPart, number>
+    Record<StandardCharPart, number>
   >({
     accessory: 0, // 0 = display value 1
     head: 0,
@@ -87,7 +88,10 @@ const CreateRandomChar = () => {
     }
   };
 
-  const handleManualCharPartChange = (part: CharPart, value: string) => {
+  const handleManualCharPartChange = (
+    part: StandardCharPart,
+    value: string
+  ) => {
     setManualCharParts((prev) => ({
       ...prev,
       [part]: parseInt(value) - 1, // Convert 1-5 to 0-4 for RandomChar
@@ -97,7 +101,8 @@ const CreateRandomChar = () => {
   const handleGenerateManualChar = async () => {
     setIsLoading(true);
     try {
-      // Convert manualCharParts (1-5) to RandomChar format (0-4)
+      // Convert manualCharParts to RandomChar format
+      // Extended parts (back_hand, back_forearm, back_forearm02) derive from back_arm
       const newRandomChar: RandomChar = {
         accessory: manualCharParts.accessory,
         head: manualCharParts.head,
@@ -106,6 +111,10 @@ const CreateRandomChar = () => {
         back_arm: manualCharParts.back_arm,
         front_leg: manualCharParts.front_leg,
         back_leg: manualCharParts.back_leg,
+        // Extended parts derived from back_arm
+        back_hand: manualCharParts.back_arm,
+        back_forearm: manualCharParts.back_arm,
+        back_forearm02: manualCharParts.back_arm,
       };
       setRandomChar(newRandomChar);
       const charJson = await generateCharAnimation(

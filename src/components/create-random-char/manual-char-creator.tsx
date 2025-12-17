@@ -1,4 +1,7 @@
-import { CHAR_PARTS, type CharPart } from "@/lib/createrandomchar";
+import {
+  STANDARD_CHAR_PARTS,
+  type StandardCharPart,
+} from "@/lib/createrandomchar";
 import {
   Select,
   SelectContent,
@@ -8,8 +11,8 @@ import {
 } from "@/components/ui/select";
 
 interface ManualCharCreatorProps {
-  manualCharParts: Record<CharPart, number>;
-  handleManualCharPartChange: (part: CharPart, value: string) => void;
+  manualCharParts: Record<StandardCharPart, number>;
+  handleManualCharPartChange: (part: StandardCharPart, value: string) => void;
   isLoading: boolean;
   handleGenerateManualChar: () => void;
 }
@@ -22,7 +25,7 @@ const ManualCharCreator = ({
 }: ManualCharCreatorProps) => {
   return (
     <div className="flex gap-x-2 items-end flex-wrap">
-      {CHAR_PARTS.map((part) => (
+      {STANDARD_CHAR_PARTS.map((part) => (
         <div key={part} className="flex flex-col gap-1">
           <label className="text-xs text-gray-300 dark:text-gray-300 capitalize">
             {part.replace("_", " ")}

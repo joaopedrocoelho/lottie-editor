@@ -27,6 +27,22 @@ const CreateRandomChar = () => {
   const [hueRotation, setHueRotation] = useState(0);
   const [saturation, setSaturation] = useState(100);
 
+  const handleSaveJson = () => {
+    if (!char) return;
+
+    const jsonString = JSON.stringify(char, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `character-${currentAnimationType}-${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   // Manual character generation state (stored as 0-4 internally, displayed as 1-5)
   const [manualCharParts, setManualCharParts] = useState<
     Record<CharPart, number>
@@ -173,27 +189,55 @@ const CreateRandomChar = () => {
           )}
         </div>
 
-        <div className="lottie-container w-1/3">
-          {char ? (
-            <div
-              style={{
-                filter: `hue-rotate(${hueRotation}deg) saturate(${saturation}%)`,
-              }}
+        <div className="flex items-start gap-4">
+          <div className="lottie-container w-1/3">
+            {char ? (
+              <div
+                style={{
+                  filter: `hue-rotate(${hueRotation}deg) saturate(${saturation}%)`,
+                }}
+              >
+                <Lottie
+                  key={key}
+                  animationData={char}
+                  loop={true}
+                  lottieRef={lottieRef}
+                />
+              </div>
+            ) : (
+              <p
+                className="no-fills"
+                style={{ textAlign: "center", color: "black" }}
+              >
+                No Lottie data found. Please generate a random character.
+              </p>
+            )}
+          </div>
+
+          {char && (
+            <button
+              type="button"
+              onClick={handleSaveJson}
+              className="upload-button w-fit flex items-center gap-2"
+              title="Save Lottie JSON to disk"
             >
-              <Lottie
-                key={key}
-                animationData={char}
-                loop={true}
-                lottieRef={lottieRef}
-              />
-            </div>
-          ) : (
-            <p
-              className="no-fills"
-              style={{ textAlign: "center", color: "black" }}
-            >
-              No Lottie data found. Please generate a random character.
-            </p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Save JSON
+            </button>
           )}
         </div>
 

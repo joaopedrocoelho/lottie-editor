@@ -25,7 +25,15 @@ def extract_element(lottie_file_path, element_name):
         with open(lottie_file_path, 'r', encoding='utf-8') as f:
             lottie_data = json.load(f)
         
-        # Extract matching root layers FIRST (to get refId)
+        # Extract matching assets
+        assets = lottie_data.get('assets', [])
+        matching_assets = []
+        
+        for asset in assets:
+            if asset.get('nm') == element_name:
+                matching_assets.append(asset)
+        
+        # Extract matching root layers
         root_layers = lottie_data.get('layers', [])
         matching_layer = None
         
@@ -33,20 +41,6 @@ def extract_element(lottie_file_path, element_name):
             if layer.get('nm') == element_name:
                 matching_layer = layer
                 break  # Take the first match
-        
-        # Collect asset IDs to include (from layer refId)
-        ref_ids_to_include = set()
-        if matching_layer and matching_layer.get('refId'):
-            ref_ids_to_include.add(matching_layer['refId'])
-        
-        # Extract matching assets by name OR by refId from the layer
-        assets = lottie_data.get('assets', [])
-        matching_assets = []
-        
-        for asset in assets:
-            # Include if name matches OR if referenced by the layer
-            if asset.get('nm') == element_name or asset.get('id') in ref_ids_to_include:
-                matching_assets.append(asset)
         
         # Build output structure
         output = {}

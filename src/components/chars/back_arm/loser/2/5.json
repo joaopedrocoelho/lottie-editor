@@ -1,7 +1,7 @@
 {
   "asset": [
     {
-      "id": "comp_5",
+      "id": "comp_4",
       "nm": "back_arm",
       "fr": 30,
       "layers": [
@@ -3485,7 +3485,7 @@
     "ind": 8,
     "ty": 0,
     "nm": "back_arm",
-    "refId": "comp_5",
+    "refId": "comp_4",
     "sr": 1,
     "ks": {
       "o": {
@@ -3502,7 +3502,7 @@
         "a": 0,
         "k": [
           450,
-          540,
+          600,
           0
         ],
         "ix": 2,

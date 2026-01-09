@@ -1,7 +1,7 @@
 {
   "asset": [
     {
-      "id": "back_leg_comp",
+      "id": "comp_2",
       "nm": "back_leg",
       "fr": 30,
       "layers": [
@@ -1903,7 +1903,7 @@
     "ind": 6,
     "ty": 0,
     "nm": "back_leg",
-    "refId": "back_leg_comp",
+    "refId": "comp_2",
     "sr": 1,
     "ks": {
       "o": {
@@ -1919,7 +1919,7 @@
       "p": {
         "a": 0,
         "k": [
-          540,
+          600,
           250,
           0
         ],
